@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ماتشا كيوتو | متجر قهوة الماتشا</title>
+<style>
+  :root{
+    --forest:#1f3d2b;
+    --moss:#3f6b44;
+    --sage:#8fae7c;
+    --leaf:#c9dbb0;
+    --cream:#f7f8f2;
+    --white:#ffffff;
+    --ink:#1a231b;
+    --line:#d8e3ca;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Tahoma','Segoe UI',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  a{text-decoration:none;color:inherit;}
+
+  /* Header */
+  header{
+    background:var(--forest);
+    color:var(--white);
+    padding:18px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  .logo{
+    font-size:26px;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo span.dot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--sage);
+    display:inline-block;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:28px;
+  }
+  nav a{
+    font-size:15px;
+    transition:color .2s;
+  }
+  nav a:hover{color:var(--leaf);}
+  .cart-btn{
+    background:var(--sage);
+    color:var(--forest);
+    border:none;
+    padding:10px 18px;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:15px;
+  }
+  .cart-count{
+    background:var(--forest);
+    color:white;
+    border-radius:50%;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;
+  }
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(135deg,var(--forest) 0%,var(--moss) 60%,var(--sage) 100%);
+    color:white;
+    padding:90px 6% 100px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    width:500px;height:500px;
+    background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);
+    top:-200px;left:-100px;
+  }
+  .hero h1{
+    font-size:46px;
+    margin-bottom:16px;
+    position:relative;
+  }
+  .hero p{
+    font-size:18px;
+    max-width:560px;
+    margin:0 auto 30px;
+    color:var(--leaf);
+    position:relative;
+  }
+  .hero-btns{display:flex;gap:16px;justify-content:center;position:relative;}
+  .btn-primary{
+    background:var(--white);
+    color:var(--forest);
+    padding:14px 30px;
+    border-radius:30px;
+    font-weight:bold;
+    border:none;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .btn-outline{
+    background:transparent;
+    color:white;
+    border:1.5px solid rgba(255,255,255,.6);
+    padding:14px 30px;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+  }
+
+  section{padding:70px 6%;}
+  .section-title{
+    text-align:center;
+    margin-bottom:14px;
+    font-size:32px;
+    color:var(--forest);
+  }
+  .section-sub{
+    text-align:center;
+    color:#5a6b57;
+    max-width:520px;
+    margin:0 auto 45px;
+  }
+
+  /* About strip */
+  .about{
+    background:var(--white);
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+    padding:50px 6%;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .about-item{text-align:center;}
+  .about-icon{
+    width:56px;height:56px;
+    background:var(--leaf);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 12px;
+    font-size:24px;
+  }
+  .about-item h4{color:var(--forest);margin-bottom:6px;font-size:16px;}
+  .about-item p{font-size:13px;color:#6a7a67;}
+
+  /* Products */
+  .products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:26px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .product-card{
+    background:var(--white);
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    transition:transform .2s, box-shadow .2s;
+    display:flex;
+    flex-direction:column;
+  }
+  .product-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(31,61,43,.12);
+  }
+  .product-img{
+    height:230px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:44px;
+    color:white;
+    overflow:hidden;
+    padding:8px;
+  }
+  .product-img img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+  .product-body{
+    padding:18px 18px 20px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+  .product-body h3{color:var(--forest);font-size:18px;margin-bottom:6px;}
+  .product-body p{font-size:13px;color:#6a7a67;margin-bottom:14px;flex:1;}
+  .product-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .price{font-weight:bold;color:var(--forest);font-size:17px;}
+  .add-btn{
+    background:var(--forest);
+    color:white;
+    border:none;
+    padding:8px 16px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:bold;
+  }
+  .add-btn:hover{background:var(--moss);}
+
+  /* Why us */
+  .why{
+    background:var(--forest);
+    color:white;
+    text-align:center;
+  }
+  .why .section-title, .why .section-sub{color:white;}
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+    max-width:900px;
+    margin:0 auto;
+  }
+  .why-card{
+    background:rgba(255,255,255,.06);
+    padding:28px 18px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .why-card .num{
+    font-size:30px;
+    font-weight:bold;
+    color:var(--sage);
+    margin-bottom:8px;
+  }
+
+  /* Contact / Footer */
+  footer{
+    background:#152a1c;
+    color:#c7d6c0;
+    padding:50px 6% 20px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+    margin-bottom:30px;
+  }
+  .footer-grid h4{color:white;margin-bottom:14px;}
+  .footer-grid p, .footer-grid li{font-size:14px;margin-bottom:8px;}
+  .footer-grid ul{list-style:none;}
+  .footer-bottom{
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.1);
+    padding-top:18px;
+    font-size:13px;
+    color:#8ea486;
+  }
+
+  /* Cart Sidebar */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.4);
+    display:none;
+    z-index:100;
+  }
+  .overlay.active{display:block;}
+  .cart-sidebar{
+    position:fixed;
+    top:0;right:-420px;
+    width:400px;
+    max-width:90vw;
+    height:100%;
+    background:var(--cream);
+    z-index:101;
+    transition:right .3s ease;
+    display:flex;
+    flex-direction:column;
+    box-shadow:-6px 0 20px rgba(0,0,0,.2);
+  }
+  .cart-sidebar.active{right:0;}
+  .cart-header{
+    background:var(--forest);
+    color:white;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .cart-header h3{font-size:19px;}
+  .close-cart{
+    background:none;border:none;color:white;font-size:22px;cursor:pointer;
+  }
+  .cart-items{
+    flex:1;
+    overflow-y:auto;
+    padding:16px 20px;
+  }
+  .cart-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .cart-item-info h5{color:var(--forest);font-size:15px;margin-bottom:4px;}
+  .cart-item-info span{font-size:13px;color:#6a7a67;}
+  .qty-control{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .qty-control button{
+    width:26px;height:26px;
+    border:1px solid var(--line);
+    background:white;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .remove-item{
+    color:#b23b3b;
+    font-size:12px;
+    cursor:pointer;
+    background:none;border:none;
+    margin-right:10px;
+  }
+  .cart-empty{
+    text-align:center;
+    color:#8a9a86;
+    padding:60px 20px;
+    font-size:14px;
+  }
+  .cart-footer{
+    padding:20px;
+    border-top:1px solid var(--line);
+    background:white;
+  }
+  .cart-total-row{
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    color:var(--forest);
+    font-size:18px;
+    margin-bottom:14px;
+  }
+  .checkout-btn{
+    width:100%;
+    background:var(--forest);
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .checkout-btn:disabled{
+    background:#b7c4ac;
+    cursor:not-allowed;
+  }
+
+  /* Modal (checkout form + invoice) */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:200;
+    padding:20px;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal-box{
+    background:white;
+    border-radius:16px;
+    max-width:480px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:28px;
+  }
+  .modal-box h2{color:var(--forest);margin-bottom:18px;font-size:22px;}
+  .form-group{margin-bottom:14px;}
+  .form-group label{
+    display:block;
+    font-size:13px;
+    color:#4a5a47;
+    margin-bottom:6px;
+  }
+  .form-group input, .form-group select{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:14px;
+    font-family:inherit;
+  }
+  .modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+  }
+  .btn-secondary{
+    flex:1;
+    background:var(--cream);
+    color:var(--forest);
+    border:1px solid var(--line);
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+  }
+  .btn-confirm{
+    flex:1;
+    background:var(--forest);
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+  }
+
+  /* Invoice */
+  .invoice-head{
+    text-align:center;
+    border-bottom:2px dashed var(--line);
+    padding-bottom:16px;
+    margin-bottom:16px;
+  }
+  .invoice-head h2{color:var(--forest);margin-bottom:4px;}
+  .invoice-head p{font-size:12px;color:#8a9a86;}
+  .invoice-meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:#4a5a47;
+    margin-bottom:16px;
+  }
+  .invoice-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:16px;
+    font-size:13px;
+  }
+  .invoice-table th{
+    text-align:right;
+    color:var(--forest);
+    border-bottom:1px solid var(--line);
+    padding:8px 4px;
+  }
+  .invoice-table td{
+    padding:8px 4px;
+    border-bottom:1px solid #f0f0f0;
+  }
+  .invoice-summary{
+    border-top:2px dashed var(--line);
+    padding-top:14px;
+  }
+  .invoice-summary-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:6px;
+    color:#4a5a47;
+  }
+  .invoice-summary-row.total{
+    font-size:19px;
+    font-weight:bold;
+    color:var(--forest);
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+  .invoice-badge{
+    background:var(--leaf);
+    color:var(--forest);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    display:inline-block;
+    margin-bottom:10px;
+  }
+
+  @media(max-width:900px){
+    nav{display:none;}
+    .about, .why-grid, .footer-grid{grid-template-columns:repeat(2,1fr);}
+    .hero h1{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="dot"></span> ماتشا كيوتو</div>
+  <nav>
+    <ul>
+      <li><a href="#home">الرئيسية</a></li>
+      <li><a href="#products">المنتجات</a></li>
+      <li><a href="#why">لماذا نحن</a></li>
+      <li><a href="#contact">تواصل معنا</a></li>
+    </ul>
+  </nav>
+  <button class="cart-btn" onclick="toggleCart(true)">
+    🛒 السلة <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <h1>ماتشا يابانية أصلية، بنكهاتك المفضلة</h1>
+  <p>نقدّم أجود أنواع الماتشا العضوية المطحونة على الحجر، بنكهات متنوعة تناسب ذوقك، توصيل سريع لباب بيتك.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">تسوّق الآن</button>
+    <button class="btn-outline" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">تعرّف علينا</button>
+  </div>
+</section>
+
+<!-- About strip -->
+<div class="about">
+  <div class="about-item">
+    <div class="about-icon">🍵</div>
+    <h4>ماتشا عضوية 100%</h4>
+    <p>مستوردة مباشرة من مزارع اليابان</p>
+  </div>
+  <div class="about-item">
+    <div class="about-icon">🚚</div>
+    <h4>توصيل سريع</h4>
+    <p>خلال 24-48 ساعة لجميع المناطق</p>
+  </div>
+  <div class="about-item">
+    <div class="about-icon">✅</div>
+    <h4>جودة مضمونة</h4>
+    <p>استرجاع مجاني خلال 7 أيام</p>
+  </div>
+  <div class="about-item">
+    <div class="about-icon">💳</div>
+    <h4>دفع آمن</h4>
+    <p>طرق دفع متعددة وموثوقة</p>
+  </div>
+</div>
+
+<!-- Products -->
+<section id="products">
+  <h2 class="section-title">منتجاتنا</h2>
+  <p class="section-sub">تشكيلة من نكهات الماتشا المختارة بعناية لتناسب جميع الأذواق</p>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- Why us -->
+<section class="why" id="why">
+  <h2 class="section-title">لماذا تختار ماتشا كيوتو</h2>
+  <p class="section-sub">تجربة قهوة مختلفة، مبنية على الجودة والشغف</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="num">+5</div>
+      <p>سنوات خبرة في استيراد وتحضير الماتشا الفاخرة</p>
+    </div>
+    <div class="why-card">
+      <div class="num">+10</div>
+      <p>نكهات مختلفة تُطرح وتُجدد باستمرار</p>
+    </div>
+    <div class="why-card">
+      <div class="num">+3000</div>
+      <p>عميل سعيد يثق بمنتجاتنا شهرياً</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer / Contact -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <h4>ماتشا كيوتو</h4>
+      <p>وجهتك الأولى لأجود أنواع الماتشا اليابانية بنكهات مبتكرة.</p>
+    </div>
+    <div>
+      <h4>روابط سريعة</h4>
+      <ul>
+        <li><a href="#home">الرئيسية</a></li>
+        <li><a href="#products">المنتجات</a></li>
+        <li><a href="#why">لماذا نحن</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>تواصل معنا</h4>
+      <p>📞 966500000000+</p>
+      <p>📧 info@matcha-kyoto.sa</p>
+      <p>📍 الدمام، السعودية</p>
+    </div>
+    <div>
+      <h4>ساعات العمل</h4>
+      <p>يومياً: 9 ص - 12 م</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 ماتشا كيوتو. جميع الحقوق محفوظة.</div>
+</footer>
+
+<!-- Cart Sidebar -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>سلة الطلبات</h3>
+    <button class="close-cart" onclick="toggleCart(false)">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer">
+    <div class="cart-empty">سلتك فارغة، أضف بعض الماتشا 🍵</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>الإجمالي</span>
+      <span id="cartTotal">0.00 ر.س</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" disabled onclick="openCheckout()">إتمام الطلب</button>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-box">
+    <h2>بيانات الطلب</h2>
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input type="text" id="custName" placeholder="مثال: سارة العتيبي">
+    </div>
+    <div class="form-group">
+      <label>رقم الجوال</label>
+      <input type="text" id="custPhone" placeholder="05xxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label>عنوان التوصيل</label>
+      <input type="text" id="custAddress" placeholder="المدينة - الحي - الشارع">
+    </div>
+    <div class="form-group">
+      <label>طريقة الدفع</label>
+      <select id="custPayment">
+        <option>الدفع عند الاستلام</option>
+        <option>بطاقة مدى / ائتمان</option>
+        <option>Apple Pay</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeCheckout()">إلغاء</button>
+      <button class="btn-confirm" onclick="confirmOrder()">تأكيد الطلب</button>
+    </div>
+  </div>
+</div>
+
+<!-- Invoice Modal -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal-box" id="invoiceBox"></div>
+</div>
+
+<script>
+const IMG_1 = "MATSH.jpeg";
+const IMG_2 = "fanyla.jpeg";
+const IMG_3 = "lafyndar.jpeg";
+const IMG_4 = "gozhind.jpeg";
+const IMG_5 = "laemonandasel.jpeg";
+const IMG_6 = "shokolata.jpeg";
+const IMG_7 = "ward.jpeg";
+const IMG_8 = "nana.jpeg";
+</script>
+<script>
+const products = [
+  {id:1, name:"ماتشا كلاسيك", desc:"نكهة الماتشا الأصلية النقية بدون إضافات", price:45, color:"#3f6b44", icon:"🍵", img:IMG_1},
+  {id:2, name:"ماتشا فانيلا", desc:"مزيج ناعم من الماتشا وكريمة الفانيلا", price:52, color:"#6b8a5a", icon:"🌿", img:IMG_2},
+  {id:3, name:"ماتشا لافندر", desc:"نكهة مهدئة بلمسة من زهور اللافندر", price:55, color:"#5a7a5f", icon:"💜", img:IMG_3},
+  {id:4, name:"ماتشا جوز الهند", desc:"مزيج استوائي بين الماتشا وحليب جوز الهند", price:50, color:"#4a6b4e", icon:"🥥", img:IMG_4},
+  {id:5, name:"ماتشا العسل والليمون", desc:"طعم منعش يجمع حلاوة العسل وحموضة الليمون", price:48, color:"#7a9a5a", icon:"🍋", img:IMG_5},
+  {id:6, name:"ماتشا الشوكولاتة", desc:"دمج فاخر بين مرارة الماتشا وغنى الشوكولاتة", price:58, color:"#2f4a33", icon:"🍫", img:IMG_6},
+  {id:7, name:"ماتشا الورد", desc:"نكهة رقيقة بعبق ماء الورد الطبيعي", price:56, color:"#5f8a52", icon:"🌸", img:IMG_7},
+  {id:8, name:"ماتشا النعناع البارد", desc:"مثالية للأجواء الحارة، منعشة وباردة", price:47, color:"#3a5c40", icon:"🌱", img:IMG_8},
+];
+
+let cart = [];
+
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img" style="background:${p.color}"><img src="${p.img}" alt="${p.name}"></div>
+      <div class="product-body">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="product-footer">
+          <span class="price">${p.price.toFixed(2)} ر.س</span>
+          <button class="add-btn" onclick="addToCart(${p.id})">أضف للسلة</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id){
+  const product = products.find(p => p.id === id);
+  const existing = cart.find(i => i.id === id);
+  if(existing){ existing.qty++; }
+  else{ cart.push({...product, qty:1}); }
+  renderCart();
+  toggleCart(true);
+}
+
+function changeQty(id, delta){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0){
+    cart = cart.filter(i => i.id !== id);
+  }
+  renderCart();
+}
+
+function removeItem(id){
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+
+function renderCart(){
+  const container = document.getElementById('cartItemsContainer');
+  const countEl = document.getElementById('cartCount');
+  const totalEl = document.getElementById('cartTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  const totalQty = cart.reduce((s,i)=>s+i.qty,0);
+  countEl.textContent = totalQty;
+
+  if(cart.length === 0){
+    container.innerHTML = '<div class="cart-empty">سلتك فارغة، أضف بعض الماتشا 🍵</div>';
+    totalEl.textContent = '0.00 ر.س';
+    checkoutBtn.disabled = true;
+    return;
+  }
+
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <h5>${item.icon} ${item.name}</h5>
+        <span>${item.price.toFixed(2)} ر.س × ${item.qty}</span>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div class="qty-control">
+          <button onclick="changeQty(${item.id},-1)">-</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${item.id},1)">+</button>
+        </div>
+        <button class="remove-item" onclick="removeItem(${item.id})">حذف</button>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  totalEl.textContent = total.toFixed(2) + ' ر.س';
+  checkoutBtn.disabled = false;
+}
+
+function toggleCart(open){
+  document.getElementById('cartSidebar').classList.toggle('active', open);
+  document.getElementById('overlay').classList.toggle('active', open);
+}
+
+function openCheckout(){
+  toggleCart(false);
+  document.getElementById('checkoutModal').classList.add('active');
+}
+function closeCheckout(){
+  document.getElementById('checkoutModal').classList.remove('active');
+}
+
+function confirmOrder(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const payment = document.getElementById('custPayment').value;
+
+  if(!name || !phone || !address){
+    alert('يرجى تعبئة جميع الحقول لإتمام الطلب');
+    return;
+  }
+
+  const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const delivery = subtotal > 150 ? 0 : 15;
+  const tax = subtotal * 0.15;
+  const total = subtotal + delivery + tax;
+
+  const orderNum = 'MK-' + Math.floor(100000 + Math.random()*900000);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ar-SA');
+
+  const invoiceBox = document.getElementById('invoiceBox');
+  invoiceBox.innerHTML = `
+    <div class="invoice-head">
+      <div class="invoice-badge">تم تأكيد الطلب ✓</div>
+      <h2>ماتشا كيوتو</h2>
+      <p>فاتورة إلكترونية رسمية</p>
+    </div>
+    <div class="invoice-meta">
+      <div><strong>رقم الطلب:</strong> ${orderNum}</div>
+      <div><strong>التاريخ:</strong> ${dateStr}</div>
+    </div>
+    <div class="invoice-meta">
+      <div><strong>العميل:</strong> ${name}</div>
+      <div><strong>الجوال:</strong> ${phone}</div>
+    </div>
+    <div class="invoice-meta">
+      <div><strong>العنوان:</strong> ${address}</div>
+    </div>
+    <table class="invoice-table">
+      <thead>
+        <tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr>
+      </thead>
+      <tbody>
+        ${cart.map(i=>`
+          <tr>
+            <td>${i.icon} ${i.name}</td>
+            <td>${i.qty}</td>
+            <td>${i.price.toFixed(2)}</td>
+            <td>${(i.price*i.qty).toFixed(2)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    <div class="invoice-summary">
+      <div class="invoice-summary-row"><span>المجموع الفرعي</span><span>${subtotal.toFixed(2)} ر.س</span></div>
+      <div class="invoice-summary-row"><span>رسوم التوصيل</span><span>${delivery === 0 ? 'مجاني' : delivery.toFixed(2)+' ر.س'}</span></div>
+      <div class="invoice-summary-row"><span>ضريبة القيمة المضافة (15%)</span><span>${tax.toFixed(2)} ر.س</span></div>
+      <div class="invoice-summary-row total"><span>الإجمالي الكلي</span><span>${total.toFixed(2)} ر.س</span></div>
+      <div class="invoice-summary-row" style="margin-top:10px;"><span>طريقة الدفع</span><span>${payment}</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-confirm" style="flex:1" onclick="finishOrder()">تم، شكراً لك</button>
+    </div>
+  `;
+
+  document.getElementById('checkoutModal').classList.remove('active');
+  document.getElementById('invoiceModal').classList.add('active');
+}
+
+function finishOrder(){
+  document.getElementById('invoiceModal').classList.remove('active');
+  cart = [];
+  renderCart();
+  document.getElementById('custName').value = '';
+  document.getElementById('custPhone').value = '';
+  document.getElementById('custAddress').value = '';
+}
+
+renderProducts();
+renderCart();
+</script>
+
+</body>
+</html>
